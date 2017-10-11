@@ -11,13 +11,12 @@ public class VectorMovement : MonoBehaviour {
     public Vector3 velocity;
     public Vector3 acceleration;
     public float maxSpeed = 1f;
+    public bool autoTick = false;
 
     public float InitMaxSpeed { get; private set; }
 
     // Use this for initialization
     void Start () {
-        velocity = Vector3.zero;
-        acceleration = Vector3.zero;
         InitMaxSpeed = maxSpeed;
 	}
 	
@@ -29,4 +28,10 @@ public class VectorMovement : MonoBehaviour {
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
         transform.position += velocity;
 	}
+
+    private void Update()
+    {
+        if (autoTick)
+            Tick();
+    }
 }

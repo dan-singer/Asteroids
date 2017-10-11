@@ -12,6 +12,10 @@ public class WrapAroundScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        if (mainCam == null)
+            mainCam = Camera.main; 
+
         //Figure out where the upper right and lower left of the viewport are
         float vertExtents = mainCam.orthographicSize;
         float horzExtents = mainCam.orthographicSize * mainCam.aspect;

@@ -9,7 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(VectorMovement))]
 public class ShipMovement : MonoBehaviour {
 
-    private Vector3 direction;
+    public Vector3 Direction { get; private set; }
     private VectorMovement movement;
     private float initAccelMag;
     private float initMaxSpeed;
@@ -22,7 +22,7 @@ public class ShipMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        direction = new Vector3(1, 0, 0);
+        Direction = new Vector3(1, 0, 0);
         initAccelMag = accelerationMagnitude;
         movement = GetComponent<VectorMovement>();
         accelerationMagnitude = 0;
@@ -31,10 +31,10 @@ public class ShipMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        direction = Quaternion.Euler(0, 0, -Input.GetAxis("Horizontal") * turnVelocity) * direction;
+        Direction = Quaternion.Euler(0, 0, -Input.GetAxis("Horizontal") * turnVelocity) * Direction;
 
         //Look in the direction we're facing
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
         //When to accelerate
@@ -50,7 +50,7 @@ public class ShipMovement : MonoBehaviour {
                 movement.velocity *= airResistanceFactor;
         }
 
-        movement.acceleration = direction * accelerationMagnitude;
+        movement.acceleration = Direction * accelerationMagnitude;
 
 
         movement.Tick();

@@ -23,6 +23,7 @@ public class CollisionManager : MonoBehaviour {
 
     /// <summary>
     /// Update the list of all the colliders.
+    /// Be sure to call this when instanitating or destroying anything.
     /// </summary>
     public static void UpdateAllColliders()
     {

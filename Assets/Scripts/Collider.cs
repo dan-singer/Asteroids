@@ -47,7 +47,7 @@ public class Collider : MonoBehaviour {
 
         foreach (Collider coll in CollisionManager.AllColliders)
         {
-            bool shouldNotCheck = coll == this || CollisionManager.WasCollCheckAlreadyPerformed(this, coll);
+            bool shouldNotCheck = coll == null || coll == this || CollisionManager.WasCollCheckAlreadyPerformed(this, coll);
             if (shouldNotCheck)
                 continue;
 

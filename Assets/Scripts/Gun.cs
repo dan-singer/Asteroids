@@ -26,7 +26,7 @@ public class Gun : MonoBehaviour {
 
     private void FireBullet()
     {
-        Bullet bullet = Instantiate<Bullet>(bulletPrefab);
+        Bullet bullet = Instantiate<Bullet>(bulletPrefab, transform.position, Quaternion.identity);
         bullet.direction = GetComponent<ShipMovement>().Direction;
     }
 }

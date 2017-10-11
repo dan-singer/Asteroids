@@ -22,7 +22,8 @@ public class ShipMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Direction = new Vector3(1, 0, 0);
+        float angle = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+        Direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
         initAccelMag = accelerationMagnitude;
         movement = GetComponent<VectorMovement>();
         accelerationMagnitude = 0;

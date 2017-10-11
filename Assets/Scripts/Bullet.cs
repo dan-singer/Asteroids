@@ -23,4 +23,13 @@ public class Bullet : MonoBehaviour {
         movement.Tick();
 
 	}
+
+    private void CollisionStarted(Object other)
+    {
+        if (! ((Collider)other).GetComponent<ShipMovement>())
+        {
+            Destroy(gameObject);
+            CollisionManager.UpdateAllColliders();
+        }
+    }
 }

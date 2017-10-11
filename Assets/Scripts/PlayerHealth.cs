@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,11 @@ public class PlayerHealth : MonoBehaviour {
 
 
     public int health = 1;
-    public int lives = 3;
+
+    /// <summary>
+    /// Called when player dies.
+    /// </summary>
+    public event Action DeathEvent;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +28,7 @@ public class PlayerHealth : MonoBehaviour {
 		
 	}
 
-    private void CollisionStarted(Object other)
+    private void CollisionStarted(UnityEngine.Object other)
     {
         Collider coll = (Collider)other;
         if (coll.GetComponent<Asteroid>())
@@ -38,7 +43,7 @@ public class PlayerHealth : MonoBehaviour {
 
     private void Die()
     {
-        //TODO implement die method
-        print("Killed Player");
+        if (DeathEvent != null)
+            DeathEvent();
     }
 }

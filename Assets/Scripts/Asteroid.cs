@@ -17,11 +17,15 @@ public class Asteroid : MonoBehaviour {
     public float accelerationStdDev = 0.0001f;
     public int level = 1;
 
+    /// <summary>
+    /// How many points is this worth?
+    /// </summary>
+    public int Value { get; set; }
 
     public float AccelerationMagnitude { get; private set; }
 
     private VectorMovement movement;
-
+    private float directionStdDev = 10.0f;
 
 
 	// Use this for initialization
@@ -29,9 +33,17 @@ public class Asteroid : MonoBehaviour {
         movement = GetComponent<VectorMovement>();
         if (level == 1)
         {
-            Direction = new Vector3(1, 0, 0);
-            Direction.Normalize();
-            Direction = Quaternion.Euler(0, 0, Random.Range(0, 360.0f)) * Direction;
+            if (GameManager.Instance.PlayerInstance)
+            {
+                Vector3 dir = GameManager.Instance.PlayerInstance.transform.position - transform.position;
+                Direction = dir.normalized;
+                Direction = Quaternion.Euler(0, 0, RandomUtils.Gaussian(0, directionStdDev)) * Direction;
+            }
+            else
+            {
+                Direction = new Vector3(1, 0, 0);
+                Direction = Quaternion.Euler(0, 0, Random.Range(0, 360.0f)) * Direction;
+            }
             AccelerationMagnitude = RandomUtils.Gaussian(accelerationMagnitudeMean, accelerationStdDev);
         }
 	}

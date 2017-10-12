@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// Manager class for entire game.
@@ -24,20 +25,56 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public int lives = 3;
-
+    public int startingLives = 3;
     public int secondsBeforeRespawn = 3;
-
     public GameObject playerPrefab;
-
     public Camera mainCamera;
 
-    private GameObject playerInstance;
+    public GameObject PlayerInstance { get; private set; }
 
-	// Use this for initialization
-	void Start () {
+    //Events
+    public event Action<int> LivesChanged;
+    public event Action<int> ScoreChanged;
+    public event Action PlayerDied;
+    public event Action PlayerGotGameover;
 
-        playerInstance = SpawnPlayer();        
+    private int lives;
+    public int Lives
+    {
+        get
+        {
+            return lives;
+        }
+        set
+        {
+            lives = value;
+            if (LivesChanged != null)
+                LivesChanged(lives);
+        }
+    }
+
+    private int score;
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+        set
+        {
+            score = value;
+            if (ScoreChanged != null)
+                ScoreChanged(score);
+        }
+    }
+
+
+
+    // Use this for initialization
+    void Start () {
+        PlayerInstance = SpawnPlayer();
+        Lives = startingLives;
+        Score = 0; //TODO highscore?
 	}
 
 
@@ -68,14 +105,21 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     private void HandlePlayerDeath()
     {
-        Destroy(playerInstance);
-        lives--;
-        if (lives > 0)
+        Destroy(PlayerInstance);
+        Lives--;
+        if (PlayerDied != null)
+            PlayerDied();
+        if (Lives > 0)
             StartCoroutine(DeathDelay());
+        else
+        {
+            if (PlayerGotGameover != null)
+                PlayerGotGameover();
+        }
     }
     private IEnumerator DeathDelay()
     {
         yield return new WaitForSeconds(secondsBeforeRespawn);
-        playerInstance = SpawnPlayer();
+        PlayerInstance = SpawnPlayer();
     }
 }

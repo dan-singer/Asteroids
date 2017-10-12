@@ -11,6 +11,8 @@ public class Gun : MonoBehaviour {
 
     public Bullet bulletPrefab;
 
+    //public float minDurationBetweenShots = 0.1f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -26,7 +28,7 @@ public class Gun : MonoBehaviour {
 
     private void FireBullet()
     {
-        Bullet bullet = Instantiate<Bullet>(bulletPrefab, transform.position, Quaternion.identity);
+        Bullet bullet = Instantiate<Bullet>(bulletPrefab, transform.position, transform.rotation);
         bullet.direction = GetComponent<ShipMovement>().Direction;
     }
 }

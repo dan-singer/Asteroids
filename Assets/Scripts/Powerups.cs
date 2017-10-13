@@ -16,6 +16,7 @@ public class Powerups : MonoBehaviour {
 
 
     public float defaultPowerupDuration = 5;
+    public Color defaultFlashColor;
 
     /// <summary>
     /// Represents a generalized powerup, where actions occur when attached, updated, and detached.
@@ -67,12 +68,16 @@ public class Powerups : MonoBehaviour {
             rapidFire.StoredData = gun.minDurationBetweenShots;
             gun.minDurationBetweenShots /= 2;
             gun.canHoldToFire = true;
+            Flash flash = GetComponent<Flash>();
+            flash.flashColor = defaultFlashColor;
+            flash.enabled = true;
         }, null, 
         () =>
         {
             Gun gun = GetComponent<Gun>();
             gun.minDurationBetweenShots = (float)rapidFire.StoredData;
             gun.canHoldToFire = false;
+            GetComponent<Flash>().enabled = false;
         });
 
         //IMPORTANT: Make sure that powerupInfo objects are populated in the SAME order as the PowerupType enumeration!

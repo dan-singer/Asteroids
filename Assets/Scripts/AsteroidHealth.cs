@@ -10,6 +10,8 @@ public class AsteroidHealth : MonoBehaviour {
 
     public int health = 1;
 
+    //public int piecesToSplitInto = 2;
+
     public AsteroidSpawner Spawner { get; set; }
 
 	// Use this for initialization
@@ -39,7 +41,7 @@ public class AsteroidHealth : MonoBehaviour {
         Asteroid asteroid = GetComponent<Asteroid>();
         //TODO make this more eloquent.
         GameManager.Instance.Score += asteroid.Value;
-        if (asteroid.level == 1)
+        if (asteroid.level < Spawner.maxAsteroidLevel)
         {
             float maxAngle = 45.0f;
             float curAngle = -maxAngle;
@@ -56,6 +58,7 @@ public class AsteroidHealth : MonoBehaviour {
                 Vector3 offset = dir * scalar;
 
                 GameObject duplicate = Instantiate<GameObject>(gameObject, transform.position + offset, transform.rotation);
+                duplicate.GetComponent<AsteroidHealth>().Spawner = Spawner;
                 Asteroid astDup = duplicate.GetComponent<Asteroid>();
                 astDup.level = asteroid.level + 1;
 

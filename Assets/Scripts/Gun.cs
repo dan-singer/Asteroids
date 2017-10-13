@@ -11,7 +11,11 @@ public class Gun : MonoBehaviour {
 
     public Bullet bulletPrefab;
 
-    //public float minDurationBetweenShots = 0.1f;
+    public float minDurationBetweenShots = 0.1f;
+
+    public bool canHoldToFire = false;
+
+    private float timeFired = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -20,11 +24,18 @@ public class Gun : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Fire1"))
+
+        bool check = canHoldToFire ? Input.GetButton("Fire1") : Input.GetButtonDown("Fire1");
+
+		if (check)
         {
-            FireBullet();
+            if (Time.time > timeFired + minDurationBetweenShots)
+            {
+                FireBullet();
+                timeFired = Time.time;
+            }
         }
-	}
+    }
 
     private void FireBullet()
     {

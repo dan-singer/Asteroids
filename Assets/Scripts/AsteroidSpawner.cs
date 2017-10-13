@@ -19,8 +19,13 @@ public class AsteroidSpawner : MonoBehaviour {
     public float meanDurationBetweenSpawns = 4;
     public float durationBetweenSpawnsStdDev = 1;
 
+    public int maxAsteroidLevel = 2;
+
+    public int scoreRequiredToIncreaseAsteroidLevel = 500;
+
     private float lastTimeSpawned;
-    private float durationBetweenSpawns; 
+    private float durationBetweenSpawns;
+    private int timesLevelIncreased = 0;
 
 	// Use this for initializaton
 	void Start () {
@@ -34,6 +39,18 @@ public class AsteroidSpawner : MonoBehaviour {
         int toSpawn = asteroidsToSpawnAtStart + Random.Range(-startingSpawnDeviation, startingSpawnDeviation + 1);
         for (int i = 0; i < toSpawn; i++)
             Spawn();
+
+        //When score gets bigger than a multiple, allow future asteroids to further subdivide.
+        GameManager.Instance.ScoreChanged += (int score) =>
+        {
+            if (maxAsteroidLevel > asteroidWorth.Length)
+                return;
+            if (score > scoreRequiredToIncreaseAsteroidLevel * (timesLevelIncreased+1))
+            {
+                maxAsteroidLevel++;
+                timesLevelIncreased++;
+            }
+        };
 	}
 	
 	// Update is called once per frame
@@ -48,7 +65,7 @@ public class AsteroidSpawner : MonoBehaviour {
     }
 
     /// <summary>
-    /// Spawn an asteroid randomly along the 
+    /// Spawn an asteroid randomly along the edges of the screen.
     /// </summary>
     private void Spawn()
     {

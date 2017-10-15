@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 
 /// <summary>
@@ -72,9 +73,16 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        if (SceneManager.GetActiveScene().name != "main")
+            return;
+
         PlayerInstance = SpawnPlayer();
+        //Give player some invincibility 
+        GetComponent<Powerups>().ActivatePowerup(Powerups.PowerupType.Invincibility);
+
         Lives = startingLives;
-        Score = 0; //TODO highscore?
+        Score = 0; 
 	}
 
 
@@ -121,5 +129,36 @@ public class GameManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(secondsBeforeRespawn);
         PlayerInstance = SpawnPlayer();
+        //Give player some invincibility 
+        GetComponent<Powerups>().ActivatePowerup(Powerups.PowerupType.Invincibility);
+    }
+
+
+    //Canvas Methods
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    //Static Utility Methods
+    /// <summary>
+    /// Provided a string in camelCase, return it with a space in between
+    /// </summary>
+    public static string CamelToSpaced(string camel)
+    {
+        string spaced = camel;
+        int offset = 0;
+        for (int i = 1; i < camel.Length; i++)
+        {
+            if (Char.IsUpper(camel[i])) {
+                spaced = spaced.Insert(i + offset, " ");
+                offset++;
+            }
+        }
+        return spaced;
     }
 }

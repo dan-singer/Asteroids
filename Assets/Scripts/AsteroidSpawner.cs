@@ -23,6 +23,11 @@ public class AsteroidSpawner : MonoBehaviour {
 
     public int scoreRequiredToIncreaseAsteroidLevel = 500;
 
+    /// <summary>
+    /// Pool of asteroid sprites to randomly pick from when spawning
+    /// </summary>
+    public Sprite[] asteroidSpritePool;
+
     private float lastTimeSpawned;
     private float durationBetweenSpawns;
     private int timesLevelIncreased = 0;
@@ -43,7 +48,7 @@ public class AsteroidSpawner : MonoBehaviour {
         //When score gets bigger than a multiple, allow future asteroids to further subdivide.
         GameManager.Instance.ScoreChanged += (int score) =>
         {
-            if (maxAsteroidLevel > asteroidWorth.Length)
+            if (maxAsteroidLevel >= asteroidWorth.Length)
                 return;
             if (score > scoreRequiredToIncreaseAsteroidLevel * (timesLevelIncreased+1))
             {
@@ -69,12 +74,12 @@ public class AsteroidSpawner : MonoBehaviour {
     /// </summary>
     private void Spawn()
     {
-        SpriteRenderer aRend = asteroidPrefab.GetComponent<SpriteRenderer>();
+        Sprite asteroidSprite = asteroidSpritePool[Random.Range(0, asteroidSpritePool.Length)];
 
         float vertExtents = mainCamera.orthographicSize;
         float horzExtents = mainCamera.orthographicSize * mainCamera.aspect;
         Vector3 extents = new Vector3(horzExtents, vertExtents, 0);
-        extents = new Vector3(extents.x + aRend.bounds.extents.x, extents.y + aRend.bounds.extents.y, 0);
+        extents = new Vector3(extents.x + asteroidSprite.bounds.extents.x, extents.y + asteroidSprite.bounds.extents.y, 0);
         //Figure our where the corners of the screen are
         Vector3 bl = mainCamera.transform.position - extents, br = mainCamera.transform.position + extents - new Vector3(0, extents.y * 2, 0);
         Vector3 ul = mainCamera.transform.position - extents + new Vector3(0, extents.y * 2, 0), ur = mainCamera.transform.position + extents;
@@ -99,6 +104,7 @@ public class AsteroidSpawner : MonoBehaviour {
 
         //Finally, spawn the asteroid
         GameObject asteroidGo = Instantiate<GameObject>(asteroidPrefab, spawnPos, Quaternion.identity);
+        asteroidGo.GetComponent<SpriteRenderer>().sprite = asteroidSprite;
         Asteroid asteroid = asteroidGo.GetComponent<Asteroid>();
         SetAsteroidWorth(asteroid);
         asteroidGo.GetComponent<AsteroidHealth>().Spawner = this;

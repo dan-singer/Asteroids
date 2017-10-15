@@ -13,6 +13,8 @@ public class PlayerHealth : MonoBehaviour {
 
     public int health = 1;
 
+    public bool canTakeDamage = true;
+
     /// <summary>
     /// Called when player dies.
     /// </summary>
@@ -31,7 +33,7 @@ public class PlayerHealth : MonoBehaviour {
     private void CollisionStarted(UnityEngine.Object other)
     {
         Collider coll = (Collider)other;
-        if (coll.GetComponent<Asteroid>())
+        if (coll.GetComponent<Asteroid>() && canTakeDamage)
         {
             health--;
             if (health <= 0)

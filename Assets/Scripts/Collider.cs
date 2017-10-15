@@ -51,6 +51,8 @@ public class Collider : MonoBehaviour {
             if (shouldNotCheck)
                 continue;
 
+            Debug.Assert(coll != null);
+
             bool collided;
             if (collisionMethod == Method.AABB)
                 collided = AABB(coll);

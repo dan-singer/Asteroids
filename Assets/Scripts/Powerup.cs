@@ -24,10 +24,10 @@ public class Powerup : MonoBehaviour {
     private void CollisionStarted(Object other)
     {
         Collider coll = (Collider)other;
-        Powerups pUps = coll.GetComponent<Powerups>();
-        if (pUps)
+        ShipMovement ship = coll.GetComponent<ShipMovement>();
+        if (ship)
         {
-            pUps.ActivatePowerup(powerupType);
+            GameManager.Instance.GetComponent<Powerups>().ActivatePowerup(powerupType);
             Destroy(gameObject);
 
         }

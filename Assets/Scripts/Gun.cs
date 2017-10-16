@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,18 +12,24 @@ public class Gun : MonoBehaviour {
 
     public Bullet bulletPrefab;
 
+    public Transform spawnPoint;
+
     public float minDurationBetweenShots = 0.1f;
 
     public bool canHoldToFire = false;
 
     private float timeFired = 0;
 
+    public event Action BulletFired;
+
 	// Use this for initialization
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
+    /// <summary>
+    /// Manage bullet firing
+    /// </summary>
 	void Update () {
 
         bool check = canHoldToFire ? Input.GetButton("Fire1") : Input.GetButtonDown("Fire1");
@@ -37,9 +44,14 @@ public class Gun : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Fire a bullet.
+    /// </summary>
     private void FireBullet()
     {
-        Bullet bullet = Instantiate<Bullet>(bulletPrefab, transform.position, transform.rotation);
+        Bullet bullet = Instantiate<Bullet>(bulletPrefab, spawnPoint.position, transform.rotation);
         bullet.direction = GetComponent<ShipMovement>().Direction;
+        if (BulletFired != null)
+            BulletFired();
     }
 }

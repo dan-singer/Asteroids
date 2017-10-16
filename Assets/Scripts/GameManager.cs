@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using System;
 
 /// <summary>
-/// Manager class for entire game.
+/// Manager class for entire game which implements the Singleton pattern.
 /// </summary>
 /// <summary>Dan Singer</summary>
 public class GameManager : MonoBehaviour {
@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
     public int secondsBeforeRespawn = 3;
     public GameObject playerPrefab;
     public Camera mainCamera;
+    public AudioManager audioManagerPrefab;
 
     public GameObject PlayerInstance { get; private set; }
 
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour {
     public event Action<int> ScoreChanged;
     public event Action PlayerDied;
     public event Action PlayerGotGameover;
+    public event Action<GameObject> NewPlayer;
 
     private int lives;
     public int Lives
@@ -74,15 +76,25 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        if (SceneManager.GetActiveScene().name != "main")
-            return;
+        if (SceneManager.GetActiveScene().name == "mainMenu")
+        {
+            //We'll need to instantiate the audiomanager, because it cannot be destroyed on load, unlike everything else.
+            if (AudioManager.Instance == null)
+            {
+                Instantiate(audioManagerPrefab);
+            }
+        }
+        else
+        {
+            PlayerInstance = SpawnPlayer();
+            //Give player some invincibility 
+            GetComponent<Powerups>().ActivatePowerup(Powerups.PowerupType.Invincibility);
 
-        PlayerInstance = SpawnPlayer();
-        //Give player some invincibility 
-        GetComponent<Powerups>().ActivatePowerup(Powerups.PowerupType.Invincibility);
+            Lives = startingLives;
+            Score = 0;
+        }
 
-        Lives = startingLives;
-        Score = 0; 
+  
 	}
 
 
@@ -98,14 +110,10 @@ public class GameManager : MonoBehaviour {
         CollisionManager.UpdateAllColliders();
         //Subscribe to player's death event
         player.GetComponent<PlayerHealth>().DeathEvent += HandlePlayerDeath;
+        if (NewPlayer != null)
+            NewPlayer(player);
         return player;
     }
-
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 
     /// <summary>
@@ -125,6 +133,9 @@ public class GameManager : MonoBehaviour {
                 PlayerGotGameover();
         }
     }
+    /// <summary>
+    /// Method which waits some time, then spawns a new player
+    /// </summary>
     private IEnumerator DeathDelay()
     {
         yield return new WaitForSeconds(secondsBeforeRespawn);
@@ -143,10 +154,19 @@ public class GameManager : MonoBehaviour {
     {
         Application.Quit();
     }
+    /// <summary>
+    /// Play a clip by delegating the work to AudioManager
+    /// </summary>
+    public void PlayClip(AudioClip aud)
+    {
+        AudioManager.Instance.PlayClip(aud);
+    }
 
     //Static Utility Methods
+
     /// <summary>
-    /// Provided a string in camelCase, return it with a space in between
+    /// Provided a string in camelCase, return it with a space in between. 
+    /// For example, CamelToSpaced("camelCase") returns "camel Case"
     /// </summary>
     public static string CamelToSpaced(string camel)
     {

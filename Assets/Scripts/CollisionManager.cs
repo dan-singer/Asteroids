@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Contains info on each of the collders as well as optimization methods.
+/// Contains info on each of the collders as well as optimization methods for collision detection.
 /// </summary>
+/// <author>Dan Singer</author>
 public class CollisionManager : MonoBehaviour {
 
 
@@ -71,13 +72,11 @@ public class CollisionManager : MonoBehaviour {
         return occured;
     }
 
-    // Use this for initialization
     void Start () {
         AllColliders = Object.FindObjectsOfType<Collider>();
         CollisionChecksThisFrame = new Dictionary<Collider, HashSet<Collider>>();
     }
 	
-	// Update is called once per frame
 	void LateUpdate () {
         //Since colliders will be adding to this in the update, we'll use this manager object to clear them after the update
         CollisionChecksThisFrame.Clear();

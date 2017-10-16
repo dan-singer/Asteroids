@@ -28,7 +28,9 @@ public class Asteroid : MonoBehaviour {
     private float directionStdDev = 10.0f;
 
 
-	// Use this for initialization
+	/// <summary>
+    /// Initialize movement. 
+    /// </summary>
 	void Start () {
         movement = GetComponent<VectorMovement>();
         if (level == 1)

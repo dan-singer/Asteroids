@@ -29,6 +29,9 @@ public class VectorMovement : MonoBehaviour {
         transform.position += velocity;
 	}
 
+    /// <summary>
+    /// If autoTick, automatically update calculations. Otherwise, another component needs to call Tick each frame, or whenever desired.
+    /// </summary>
     private void Update()
     {
         if (autoTick)

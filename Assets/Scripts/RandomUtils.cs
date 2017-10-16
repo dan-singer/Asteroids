@@ -6,7 +6,7 @@ using UnityEngine;
 /// Utility class containing a collection of methods for random calculations.
 /// </summary>
 /// <author>IGM</author>
-/// <author>Dan Singer</author>
+/// <note>Borrowed by Dan Singer</note>
 public static class RandomUtils
 {
     /// <summary>

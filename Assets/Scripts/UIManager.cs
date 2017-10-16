@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 /// <summary>
-/// Manager for all ui elements.
+/// Manager for all ui elements (Singleton).
 /// </summary>
 /// <author>Dan Singer</author>
 public class UIManager : MonoBehaviour {
@@ -15,7 +15,26 @@ public class UIManager : MonoBehaviour {
     public Text powerup;
     public GameObject gameOverPanel;
 
-    // Use this for initialization
+
+    private static UIManager instance;
+    /// <summary>
+    /// Singleton pattern.
+    /// </summary>
+    public static UIManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<UIManager>();
+            }
+            return instance;
+        }
+    }
+
+    /// <summary>
+    /// Subscribe to various events, and edit UI in response.
+    /// </summary>
     void Start() {
 
         //Hook up event-handlers
@@ -40,11 +59,6 @@ public class UIManager : MonoBehaviour {
             powerup.text = "";
         };
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 
 

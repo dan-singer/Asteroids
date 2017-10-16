@@ -42,6 +42,9 @@ public class PowerupSpawner : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// Spawn a powerup somewhere on the screen
+    /// </summary>
     private void Spawn()
     {
         SpriteRenderer pRend = powerupPrefab.GetComponent<SpriteRenderer>();

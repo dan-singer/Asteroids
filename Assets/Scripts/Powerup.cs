@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Generic data for a powerup
 /// </summary>
+/// <author>Dan Singer</author>
 [RequireComponent(typeof(Collider))]
 public class Powerup : MonoBehaviour {
 
@@ -21,6 +22,10 @@ public class Powerup : MonoBehaviour {
 		
 	}
 
+    /// <summary>
+    /// Handle collision events for Powerups.
+    /// </summary>
+    /// <param name="other"></param>
     private void CollisionStarted(Object other)
     {
         Collider coll = (Collider)other;

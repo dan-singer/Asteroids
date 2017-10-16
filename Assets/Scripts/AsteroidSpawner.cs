@@ -32,7 +32,9 @@ public class AsteroidSpawner : MonoBehaviour {
     private float durationBetweenSpawns;
     private int timesLevelIncreased = 0;
 
-	// Use this for initializaton
+    /// <summary>
+    /// Initialize values.
+    /// </summary>
 	void Start () {
         if (!mainCamera)
             mainCamera = Camera.main;
@@ -58,7 +60,9 @@ public class AsteroidSpawner : MonoBehaviour {
         };
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Keep track of when to spawn asteroids
+    /// </summary>
 	void Update () {
 
         if (Time.time > lastTimeSpawned + durationBetweenSpawns)
@@ -112,6 +116,10 @@ public class AsteroidSpawner : MonoBehaviour {
         CollisionManager.UpdateAllColliders();
     }
 
+    /// <summary>
+    /// Set the asteroid's worth, based on the asteroidWorth array and the asteroid's level
+    /// </summary>
+    /// <param name="asteroid"></param>
     public void SetAsteroidWorth(Asteroid asteroid)
     {
         asteroid.Value = asteroidWorth[asteroid.level - 1];

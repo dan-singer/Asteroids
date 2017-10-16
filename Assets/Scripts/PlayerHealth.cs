@@ -29,7 +29,9 @@ public class PlayerHealth : MonoBehaviour {
 	void Update () {
 		
 	}
-
+    /// <summary>
+    /// Handle collision events for the Player
+    /// </summary>
     private void CollisionStarted(UnityEngine.Object other)
     {
         Collider coll = (Collider)other;
@@ -43,6 +45,9 @@ public class PlayerHealth : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Broadcast the death event, and allow another object to handle it.
+    /// </summary>
     private void Die()
     {
         if (DeathEvent != null)

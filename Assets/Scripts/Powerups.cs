@@ -63,11 +63,12 @@ public class Powerups : MonoBehaviour {
 	}
 
     /// <summary>
-    /// Initialize each of the possible powerups, and add them to the dictionary
+    /// Initialize each of the possible powerups, and add them to the dictionary.
     /// </summary>
     private void InitializePowerups()
     {
         PowerupInfo rapidFire = new PowerupInfo(defaultPowerupDuration);
+        //Note that SetActions takes three delegate parameters, hence the odd structure below.
         rapidFire.SetActions(() =>
         {
             GameObject player = GameManager.Instance.PlayerInstance;
@@ -118,7 +119,7 @@ public class Powerups : MonoBehaviour {
 
 
     /// <summary>
-    /// Activate a powerup 
+    /// Deactivate the current powerup, and then activate the provided powerup.
     /// </summary>
     /// <param name="powerupType">Enum representing all available powerups</param>
     public void ActivatePowerup(PowerupType powerupType)
@@ -155,10 +156,11 @@ public class Powerups : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Manages powerup duration
+    /// </summary>
     void Update () {
 
-        //Manages powerup duration
 		if (usingPowerup)
         {
             if (currentPowerup.Update != null)

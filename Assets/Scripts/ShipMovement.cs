@@ -20,16 +20,24 @@ public class ShipMovement : MonoBehaviour {
 
     public float airResistanceFactor = 0.9f;
 
-	// Use this for initialization
+    private Thruster thruster;
+
+	/// <summary>
+    /// Initialize values.
+    /// </summary>
 	void Start () {
         float angle = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+        //Initialize direction based on the starting angle of the ship.
         Direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
         initAccelMag = accelerationMagnitude;
         movement = GetComponent<VectorMovement>();
+        thruster = GetComponentInChildren<Thruster>();
         accelerationMagnitude = 0;
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Manage ship movement.
+    /// </summary>
 	void Update () {
 
         Direction = Quaternion.Euler(0, 0, -Input.GetAxis("Horizontal") * turnVelocity) * Direction;
@@ -43,17 +51,19 @@ public class ShipMovement : MonoBehaviour {
         {
             accelerationMagnitude = initAccelMag;
             movement.maxSpeed = movement.InitMaxSpeed;
+            thruster.enabled = true;
         }
         else
         {
             accelerationMagnitude = 0;
             if (movement.velocity.sqrMagnitude > Mathf.Pow((movement.maxSpeed / 2), 2))
                 movement.velocity *= airResistanceFactor;
+            thruster.enabled = false;
         }
 
         movement.acceleration = Direction * accelerationMagnitude;
 
-
+        //Update the movement component each frame.
         movement.Tick();
 	}
 }

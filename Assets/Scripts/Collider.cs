@@ -22,7 +22,7 @@ public class Collider : MonoBehaviour {
     private HashSet<Collider> collidingWith;
 
     /// <summary>
-    /// This will be broadcast when a collision occured.
+    /// These will be broadcast at various stages of the collision.
     /// </summary>
     private static string collisionMessage = "CollisionOccurring";
     private static string collisionStartedMessage = "CollisionStarted";
@@ -42,7 +42,9 @@ public class Collider : MonoBehaviour {
         collidingWith = new HashSet<Collider>();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Loop through each collider, and perform a collision check on it if it hasn't been performed yet this frame.
+    /// </summary>
     void Update() {
 
         foreach (Collider coll in CollisionManager.AllColliders)
@@ -84,6 +86,11 @@ public class Collider : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Broadcast a message to this MonoBehaviour and to the collider we collided with.
+    /// </summary>
+    /// <param name="msg">Collision message. See collisionMessage fields.</param>
+    /// <param name="other">Other collider we collided with.</param>
     private void BroadcastCollisionMessage(string msg, Collider other)
     {
         BroadcastMessage(msg, other, SendMessageOptions.DontRequireReceiver);

@@ -9,20 +9,12 @@ using UnityEngine;
 public class AsteroidHealth : MonoBehaviour {
 
     public int health = 1;
-
-    //public int piecesToSplitInto = 2;
-
     public AsteroidSpawner Spawner { get; set; }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
-
+    /// <summary>
+    /// Handle collision events for the Asteroid
+    /// </summary>
+    /// <param name="other"></param>
     private void CollisionStarted(Object other)
     {
         Collider coll = (Collider)other;
@@ -36,10 +28,12 @@ public class AsteroidHealth : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Destroy this asteroid, and split into more pieces if its level is lower than Spawner.maxAsteroidLevel
+    /// </summary>
     private void Die()
     {
         Asteroid asteroid = GetComponent<Asteroid>();
-        //TODO make this more eloquent.
         GameManager.Instance.Score += asteroid.Value;
         if (asteroid.level < Spawner.maxAsteroidLevel)
         {
@@ -48,9 +42,9 @@ public class AsteroidHealth : MonoBehaviour {
             int toSpawn = 2;
             int divisions = toSpawn - 1;
             float scale = 1 / (Mathf.Pow(2, asteroid.level));
+            //Here, we precisely spawn two asteroids 90 degrees apart from each other.
             for (int i=0; i<toSpawn; i++)
             {
-
                 Vector3 dir = Quaternion.Euler(0, 0, curAngle) * asteroid.Direction;
 
                 //Offset used to make sure half asteroids don't touch

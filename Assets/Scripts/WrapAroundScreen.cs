@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Behaviour which causes this GameObject to wrap around the screen.
+/// </summary>
+/// <author>Dan Singer</author>
 public class WrapAroundScreen : MonoBehaviour {
 
     public Camera mainCam;
@@ -10,7 +14,9 @@ public class WrapAroundScreen : MonoBehaviour {
     private Vector3 myExtents;
     private Vector3 position;
 
-	// Use this for initialization
+	/// <summary>
+    /// Initialize screen and camera values.
+    /// </summary>
 	void Start () {
 
         if (mainCam == null)
@@ -29,7 +35,9 @@ public class WrapAroundScreen : MonoBehaviour {
         position = transform.position;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Wrap the object around the screen.
+    /// </summary>
     void Update () {
         //Make sure we grab the most up-to-date position
         position = transform.position;

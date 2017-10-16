@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Behaviour for a bullet.
+/// </summary>
+/// <author>Dan Singer</author>
 [RequireComponent(typeof(VectorMovement))]
 public class Bullet : MonoBehaviour {
 
@@ -24,6 +28,9 @@ public class Bullet : MonoBehaviour {
 
 	}
 
+    /// <summary>
+    /// Handle collision events for the Bullet
+    /// </summary>
     private void CollisionStarted(Object other)
     {
         if (! ((Collider)other).GetComponent<ShipMovement>())
